@@ -13,20 +13,6 @@ export interface TeamInvite {
   role: string;
 }
 
-async function assertOwner(supabase: {
-  from: (t: string) => {
-    select: (c: string) => {
-      eq: (
-        c: string,
-        v: string,
-      ) => { eq: (c: string, v: string) => { maybeSingle: () => Promise<{ data: unknown }> } };
-    };
-  };
-}) {
-  const { data } = await supabase.from("user_roles").select("role").eq("role", "owner").eq;
-  void data;
-}
-
 /** Owner-only team listing: members with roles, plus outstanding invitations. */
 export const getTeam = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
@@ -145,5 +131,3 @@ export const cancelTeamInvite = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     return { ok: true };
   });
-
-void assertOwner;
