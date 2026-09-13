@@ -78,17 +78,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Craft Control — Minecraft Server Panel" },
+      { title: "Ether — Minecraft Server Control" },
       {
         name: "description",
         content:
-          "Remotely start, stop and manage your home Minecraft Forge server through a paired desktop agent.",
+          "Securely manage your home Minecraft server from anywhere with Ether.",
       },
-      { property: "og:title", content: "Craft Control — Minecraft Server Panel" },
+      { property: "og:title", content: "Ether — Minecraft Server Control" },
       {
         property: "og:description",
         content:
-          "Remotely start, stop and manage your home Minecraft Forge server through a paired desktop agent.",
+          "Securely manage your home Minecraft server from anywhere with Ether.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -101,7 +101,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap",
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/favicon.ico", sizes: "any" },
+      { rel: "icon", href: "/favicon.png", type: "image/png", sizes: "512x512" },
+      { rel: "apple-touch-icon", href: "/favicon.png" },
     ],
   }),
   shellComponent: RootShell,
