@@ -57,7 +57,7 @@ export function PairAgentCard({ userId, onPaired }: { userId: string; onPaired: 
   const expired = Boolean(expiresAt && secondsLeft <= 0);
 
   return (
-    <section className="panel p-5">
+    <section className="panel min-w-0 p-4 sm:p-5">
       <header className="flex items-center gap-2">
         <KeyRound className="size-4 text-primary" />
         <h2 className="text-sm font-semibold">Connect your computer</h2>
@@ -68,13 +68,14 @@ export function PairAgentCard({ userId, onPaired }: { userId: string; onPaired: 
       </p>
 
       {code && !expired ? (
-        <div className="mt-4 flex flex-wrap items-center gap-3">
-          <span className="rounded-md border border-border bg-surface-2 px-4 py-2 font-mono text-2xl tracking-widest text-primary text-glow">
+        <div className="mt-4 grid min-w-0 gap-3 sm:grid-cols-[auto_auto_1fr] sm:items-center">
+          <span className="max-w-full overflow-hidden rounded-md border border-border bg-surface-2 px-3 py-2 text-center font-mono text-xl tracking-widest text-primary text-glow sm:px-4 sm:text-2xl">
             {code}
           </span>
           <Button
             variant="secondary"
             size="sm"
+            className="w-full sm:w-auto"
             onClick={() => {
               void navigator.clipboard.writeText(code);
               toast.success("Code copied");
@@ -82,13 +83,13 @@ export function PairAgentCard({ userId, onPaired }: { userId: string; onPaired: 
           >
             <Copy className="size-4" /> Copy
           </Button>
-          <span className="text-xs text-muted-foreground">
+          <span className="text-center text-xs text-muted-foreground sm:text-left">
             Expires in {Math.floor(secondsLeft / 60)}:
             {String(secondsLeft % 60).padStart(2, "0")}
           </span>
         </div>
       ) : (
-        <Button className="mt-4" onClick={() => create.mutate()} disabled={create.isPending}>
+        <Button className="mt-4 w-full sm:w-auto" onClick={() => create.mutate()} disabled={create.isPending}>
           {create.isPending && <Loader2 className="size-4 animate-spin" />}
           {expired ? "Generate a new code" : "Generate pairing code"}
         </Button>

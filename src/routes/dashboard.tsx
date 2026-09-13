@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect } from "react";
 import {
   Cpu,
@@ -7,7 +7,6 @@ import {
   Loader2,
   LogOut,
   MemoryStick,
-  Pickaxe,
   RefreshCw,
   Timer,
   Users,
@@ -26,6 +25,9 @@ import { ConsolePanel } from "@/components/ConsolePanel";
 import { QuickCommands } from "@/components/QuickCommands";
 import { PlayersCard } from "@/components/PlayersCard";
 import { StatMeter } from "@/components/StatMeter";
+import { TeamCard } from "@/components/TeamCard";
+import { AetherLogo } from "@/components/AetherLogo";
+import { useRole } from "@/hooks/useRole";
 import { formatUptime, formatWhen, isLive, type AgentRow } from "@/lib/agent-client";
 import { EMPTY_STATUS, type ServerStatus } from "@/lib/protocol";
 
@@ -33,13 +35,13 @@ export const Route = createFileRoute("/dashboard")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Server dashboard — Craft Control" },
+      { title: "Server dashboard — Ether" },
       {
         name: "description",
         content:
           "Start, stop and watch your home Minecraft Forge server, and send console commands from anywhere.",
       },
-      { property: "og:title", content: "Server dashboard — Craft Control" },
+      { property: "og:title", content: "Server dashboard — Ether" },
       {
         property: "og:description",
         content: "Start, stop and watch your home Minecraft server from anywhere.",
@@ -54,6 +56,8 @@ export const Route = createFileRoute("/dashboard")({
 function DashboardPage() {
   const { session, user, loading } = useSession();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const role = useRole(user?.id);
 
   useEffect(() => {
     if (!loading && !session) void navigate({ to: "/auth", replace: true });
@@ -102,14 +106,12 @@ function DashboardPage() {
       <AppBackground />
 
       <header className="sticky top-0 z-20 border-b border-border/70 bg-background/85 backdrop-blur-md">
-        <div className="mx-auto grid w-full max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 py-3">
+        <div className="mx-auto grid w-full max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-2 px-3 py-2.5 sm:gap-3 sm:px-4 sm:py-3">
           <div className="flex min-w-0 items-center gap-2.5">
-            <div className="flex size-9 shrink-0 items-center justify-center rounded-xl border border-primary/30 bg-primary/15 text-primary shadow-glow sm:size-10">
-              <Pickaxe className="size-4 sm:size-5" />
-            </div>
+            <AetherLogo size={40} className="size-9 rounded-xl sm:size-10" />
             <div className="min-w-0">
               <h1 className="truncate text-sm font-semibold tracking-tight sm:text-base">
-                Craft Control
+                Ether
               </h1>
               <p className="truncate text-[11px] text-muted-foreground sm:text-xs">{user.email}</p>
             </div>
@@ -128,8 +130,14 @@ function DashboardPage() {
               variant="ghost"
               size="sm"
               onClick={() => {
-                void supabase.auth.signOut();
+                void (async () => {
+                  await queryClient.cancelQueries();
+                  queryClient.clear();
+                  await supabase.auth.signOut();
+                  await navigate({ to: "/auth", replace: true });
+                })();
               }}
+              aria-label="Sign out"
             >
               <LogOut className="size-4" />
               <span className="hidden sm:inline">Sign out</span>
@@ -138,18 +146,29 @@ function DashboardPage() {
         </div>
       </header>
 
-      <main className="mx-auto w-full max-w-6xl px-4 py-5 sm:py-6">
+      <main className="mx-auto w-full max-w-6xl px-3 py-4 sm:px-4 sm:py-6">
         {!agent ? (
-          <div className="grid gap-4 lg:grid-cols-2">
-            <PairAgentCard userId={user.id} onPaired={refresh} />
-            <HelperAddressesCard />
+          <div className="space-y-4">
+            <section className="px-1 py-2 sm:py-3">
+              <p className="text-xs font-medium uppercase text-primary">Welcome to Ether</p>
+              <h2 className="mt-1 text-xl font-semibold sm:text-2xl">Connect your first server</h2>
+              <p className="mt-1 max-w-2xl text-sm leading-6 text-muted-foreground">
+                Create a secure code here, then enter it in the helper app on your server computer.
+              </p>
+            </section>
+            <div className="grid min-w-0 gap-4 lg:grid-cols-2">
+              <PairAgentCard userId={user.id} onPaired={refresh} />
+              <HelperAddressesCard />
+            </div>
+            {role.isOwner && <TeamCard />}
           </div>
         ) : (
           <Tabs defaultValue="overview">
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList className={`grid h-11 w-full ${role.isOwner ? "grid-cols-4" : "grid-cols-3"}`}>
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="console">Console</TabsTrigger>
               <TabsTrigger value="setup">Setup</TabsTrigger>
+              {role.isOwner && <TabsTrigger value="team">Team</TabsTrigger>}
             </TabsList>
 
             <TabsContent value="overview" className="mt-4 space-y-4">
@@ -250,6 +269,12 @@ function DashboardPage() {
               <HelperAddressesCard />
               <AgentSettingsCard agent={agent} onChanged={refresh} />
             </TabsContent>
+
+            {role.isOwner && (
+              <TabsContent value="team" className="mt-4">
+                <TeamCard />
+              </TabsContent>
+            )}
           </Tabs>
         )}
       </main>

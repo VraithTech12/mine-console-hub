@@ -9,7 +9,7 @@ export const RELAY_URL = `wss://${STABLE_HOST}/api/public/agent/relay`;
 
 function Row({ label, value }: { label: string; value: string }) {
   return (
-    <div className="mt-3">
+    <div className="mt-3 min-w-0">
       <p className="text-xs uppercase tracking-wide text-muted-foreground">{label}</p>
       <div className="mt-1 flex items-center gap-2">
         <code className="min-w-0 flex-1 truncate rounded-md border border-border bg-surface-2 px-3 py-2 font-mono text-xs">
@@ -17,7 +17,8 @@ function Row({ label, value }: { label: string; value: string }) {
         </code>
         <Button
           variant="secondary"
-          size="sm"
+          size="icon"
+          aria-label={`Copy ${label}`}
           onClick={() => {
             void navigator.clipboard.writeText(value);
             toast.success("Copied");
@@ -32,7 +33,7 @@ function Row({ label, value }: { label: string; value: string }) {
 
 export function HelperAddressesCard() {
   return (
-    <section className="panel p-5">
+    <section className="panel min-w-0 p-4 sm:p-5">
       <header className="flex items-center gap-2">
         <Link2 className="size-4 text-primary" />
         <h2 className="text-sm font-semibold">Addresses for the helper app</h2>

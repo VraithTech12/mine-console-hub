@@ -100,13 +100,13 @@ export function TeamCard() {
         {team.data?.members.map((m) => (
           <div
             key={m.userId}
-            className="flex items-center justify-between gap-3 rounded-md border border-border/70 bg-surface-2/40 px-3 py-2"
+            className="flex flex-col gap-2 rounded-md border border-border/70 bg-surface-2/40 px-3 py-2 sm:flex-row sm:items-center sm:justify-between"
           >
             <div className="flex min-w-0 items-center gap-2">
               <UserRound className="size-4 shrink-0 text-muted-foreground" />
               <span className="truncate text-sm">{m.email ?? m.userId}</span>
             </div>
-            <div className="flex shrink-0 items-center gap-2">
+            <div className="flex w-full items-center justify-between gap-2 sm:w-auto sm:justify-end">
               <span className="rounded-full border border-primary/30 bg-primary/15 px-2 py-0.5 text-[11px] capitalize text-primary">
                 {m.roles.join(", ")}
               </span>
@@ -128,10 +128,10 @@ export function TeamCard() {
         {team.data?.invites.map((i) => (
           <div
             key={i.id}
-            className="flex items-center justify-between gap-3 rounded-md border border-dashed border-border px-3 py-2"
+            className="flex flex-col gap-2 rounded-md border border-dashed border-border px-3 py-2 sm:flex-row sm:items-center sm:justify-between"
           >
             <span className="truncate text-sm text-muted-foreground">{i.email}</span>
-            <div className="flex shrink-0 items-center gap-2">
+            <div className="flex w-full items-center justify-between gap-2 sm:w-auto sm:justify-end">
               <span className="rounded-full border border-border bg-surface-2 px-2 py-0.5 text-[11px] capitalize text-muted-foreground">
                 {i.role} · invited
               </span>

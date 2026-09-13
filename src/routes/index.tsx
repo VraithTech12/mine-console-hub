@@ -7,15 +7,15 @@ export const Route = createFileRoute("/")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Craft Control — Minecraft Server Panel" },
+      { title: "Ether — Minecraft Server Control" },
       {
         name: "description",
-        content: "Sign in to manage your home Minecraft Forge server from anywhere.",
+        content: "Sign in to securely manage your home Minecraft server with Ether.",
       },
-      { property: "og:title", content: "Craft Control — Minecraft Server Panel" },
+      { property: "og:title", content: "Ether — Minecraft Server Control" },
       {
         property: "og:description",
-        content: "Sign in to manage your home Minecraft Forge server from anywhere.",
+        content: "Sign in to securely manage your home Minecraft server with Ether.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
