@@ -92,6 +92,8 @@ function AuthPage() {
       toast.error(error.message);
       return;
     }
+    if (mcName.trim()) window.localStorage.setItem(PENDING_MC_NAME_KEY, mcName.trim());
+
     if (!data.session) {
       setSent(true);
       toast.success("Check your email to confirm your account.");
