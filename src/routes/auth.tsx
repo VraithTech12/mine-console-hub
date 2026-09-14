@@ -16,12 +16,12 @@ export const Route = createFileRoute("/auth")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Sign in — Ether" },
-      { name: "description", content: "Sign in to your private Ether Minecraft server control panel." },
-      { property: "og:title", content: "Sign in — Ether" },
+      { title: "Sign in — Aether" },
+      { name: "description", content: "Sign in to your private Aether Minecraft server control panel." },
+      { property: "og:title", content: "Sign in — Aether" },
       {
         property: "og:description",
-        content: "Sign in to your private Ether Minecraft server control panel.",
+        content: "Sign in to your private Aether Minecraft server control panel.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -83,7 +83,7 @@ function AuthPage() {
       <div className="w-full max-w-md">
         <div className="mb-5 flex flex-col items-center text-center sm:mb-7">
           <AetherLogo size={64} className="mb-4" />
-          <h1 className="text-3xl font-semibold tracking-tight text-glow sm:text-4xl">Ether</h1>
+          <h1 className="text-3xl font-semibold tracking-tight text-glow sm:text-4xl">Aether</h1>
           <p className="mt-2 max-w-sm text-sm leading-6 text-muted-foreground">
             Your private control room for the Minecraft server running at home.
           </p>

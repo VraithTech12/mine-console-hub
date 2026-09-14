@@ -1,4 +1,4 @@
-# Ether
+# Aether
 
 Build a web dashboard that remotely manages my home Minecraft Forge server through a desktop agent I've already built. I'm attaching PROTOCOL.md — that file is the contract. Implement it exactly as written; don't redesign the message formats, headers, or action names. ARCHITECTURE (important) 
 

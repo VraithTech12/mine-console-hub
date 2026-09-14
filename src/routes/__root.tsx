@@ -78,17 +78,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Ether — Minecraft Server Control" },
+      { title: "Aether — Minecraft Server Control" },
       {
         name: "description",
         content:
-          "Securely manage your home Minecraft server from anywhere with Ether.",
+          "Securely manage your home Minecraft server from anywhere with Aether.",
       },
-      { property: "og:title", content: "Ether — Minecraft Server Control" },
+      { property: "og:title", content: "Aether — Minecraft Server Control" },
       {
         property: "og:description",
         content:
-          "Securely manage your home Minecraft server from anywhere with Ether.",
+          "Securely manage your home Minecraft server from anywhere with Aether.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
