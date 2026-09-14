@@ -196,6 +196,25 @@ function AuthPage() {
                         )}
                       </div>
                     )}
+                    {tab === "signup" && (
+                      <div className="space-y-1.5">
+                        <Label htmlFor="signup-mc">Minecraft name (optional)</Label>
+                        <div className="flex items-center gap-3">
+                          <MinecraftAvatar username={mcName} size={44} />
+                          <Input
+                            id="signup-mc"
+                            placeholder="Steve"
+                            maxLength={16}
+                            value={mcName}
+                            onChange={(e) => setMcName(e.target.value)}
+                            className="h-11"
+                          />
+                        </div>
+                        <p className="text-xs text-muted-foreground">
+                          Your character’s head becomes your avatar.
+                        </p>
+                      </div>
+                    )}
                     <Button
                       type="submit"
                       className="h-11 w-full"
@@ -205,6 +224,33 @@ function AuthPage() {
                       {tab === "signin" ? "Sign in" : "Create account"}
                     </Button>
                   </form>
+
+                  <div className="my-5 flex items-center gap-3 text-[11px] uppercase tracking-wide text-muted-foreground">
+                    <span className="h-px flex-1 bg-border" />
+                    or
+                    <span className="h-px flex-1 bg-border" />
+                  </div>
+
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    className="h-11 w-full"
+                    disabled={msBusy}
+                    onClick={() => void signInWithMicrosoft()}
+                  >
+                    {msBusy ? (
+                      <Loader2 className="size-4 animate-spin" />
+                    ) : (
+                      <svg viewBox="0 0 23 23" className="size-4" aria-hidden>
+                        <path fill="#f35325" d="M1 1h10v10H1z" />
+                        <path fill="#81bc06" d="M12 1h10v10H12z" />
+                        <path fill="#05a6f0" d="M1 12h10v10H1z" />
+                        <path fill="#ffba08" d="M12 12h10v10H12z" />
+                      </svg>
+                    )}
+                    {tab === "signin" ? "Sign in with Microsoft" : "Continue with Microsoft"}
+                  </Button>
+
                 </TabsContent>
               ))}
             </Tabs>
