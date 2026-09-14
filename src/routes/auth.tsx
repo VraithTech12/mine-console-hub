@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Eye, EyeOff, Loader2, MailCheck, Server, ShieldCheck, Smartphone } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { lovable } from "@/integrations/lovable/index";
 
 import { useSession } from "@/hooks/useSession";
 import { AppBackground } from "@/components/AppBackground";
@@ -11,6 +12,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AetherLogo } from "@/components/AetherLogo";
+import { MinecraftAvatar } from "@/components/MinecraftAvatar";
+import { PENDING_MC_NAME_KEY } from "@/hooks/useProfile";
+
 
 export const Route = createFileRoute("/auth")({
   ssr: false,
@@ -40,6 +44,24 @@ function AuthPage() {
   const [sent, setSent] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [mcName, setMcName] = useState("");
+  const [msBusy, setMsBusy] = useState(false);
+
+  async function signInWithMicrosoft() {
+    setMsBusy(true);
+    if (mcName.trim()) window.localStorage.setItem(PENDING_MC_NAME_KEY, mcName.trim());
+    const result = await lovable.auth.signInWithOAuth("microsoft", {
+      redirect_uri: window.location.origin,
+    });
+    if (result.error) {
+      setMsBusy(false);
+      toast.error("Microsoft sign-in didn’t work. Please try again.");
+      return;
+    }
+    if (result.redirected) return;
+    setMsBusy(false);
+  }
+
 
   useEffect(() => {
     if (!loading && session) void navigate({ to: "/dashboard", replace: true });
@@ -70,6 +92,8 @@ function AuthPage() {
       toast.error(error.message);
       return;
     }
+    if (mcName.trim()) window.localStorage.setItem(PENDING_MC_NAME_KEY, mcName.trim());
+
     if (!data.session) {
       setSent(true);
       toast.success("Check your email to confirm your account.");
@@ -85,7 +109,7 @@ function AuthPage() {
           <AetherLogo size={64} className="mb-4" />
           <h1 className="text-3xl font-semibold tracking-tight text-glow sm:text-4xl">Aether</h1>
           <p className="mt-2 max-w-sm text-sm leading-6 text-muted-foreground">
-            Your private control room for the Minecraft server running at home.
+            Your private control room for your Minecraft server.
           </p>
           <div className="mt-4 flex flex-wrap justify-center gap-x-4 gap-y-2 text-xs text-muted-foreground">
             <span className="inline-flex items-center gap-1.5"><ShieldCheck className="size-3.5 text-primary" />Private access</span>
@@ -172,6 +196,25 @@ function AuthPage() {
                         )}
                       </div>
                     )}
+                    {tab === "signup" && (
+                      <div className="space-y-1.5">
+                        <Label htmlFor="signup-mc">Minecraft name (optional)</Label>
+                        <div className="flex items-center gap-3">
+                          <MinecraftAvatar username={mcName} size={44} />
+                          <Input
+                            id="signup-mc"
+                            placeholder="Steve"
+                            maxLength={16}
+                            value={mcName}
+                            onChange={(e) => setMcName(e.target.value)}
+                            className="h-11"
+                          />
+                        </div>
+                        <p className="text-xs text-muted-foreground">
+                          Your character’s head becomes your avatar.
+                        </p>
+                      </div>
+                    )}
                     <Button
                       type="submit"
                       className="h-11 w-full"
@@ -181,6 +224,33 @@ function AuthPage() {
                       {tab === "signin" ? "Sign in" : "Create account"}
                     </Button>
                   </form>
+
+                  <div className="my-5 flex items-center gap-3 text-[11px] uppercase tracking-wide text-muted-foreground">
+                    <span className="h-px flex-1 bg-border" />
+                    or
+                    <span className="h-px flex-1 bg-border" />
+                  </div>
+
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    className="h-11 w-full"
+                    disabled={msBusy}
+                    onClick={() => void signInWithMicrosoft()}
+                  >
+                    {msBusy ? (
+                      <Loader2 className="size-4 animate-spin" />
+                    ) : (
+                      <svg viewBox="0 0 23 23" className="size-4" aria-hidden>
+                        <path fill="#f35325" d="M1 1h10v10H1z" />
+                        <path fill="#81bc06" d="M12 1h10v10H12z" />
+                        <path fill="#05a6f0" d="M1 12h10v10H1z" />
+                        <path fill="#ffba08" d="M12 12h10v10H12z" />
+                      </svg>
+                    )}
+                    {tab === "signin" ? "Sign in with Microsoft" : "Continue with Microsoft"}
+                  </Button>
+
                 </TabsContent>
               ))}
             </Tabs>
