@@ -35,13 +35,13 @@ export const Route = createFileRoute("/dashboard")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Server dashboard — Ether" },
+      { title: "Server dashboard — Aether" },
       {
         name: "description",
         content:
           "Start, stop and watch your home Minecraft Forge server, and send console commands from anywhere.",
       },
-      { property: "og:title", content: "Server dashboard — Ether" },
+      { property: "og:title", content: "Server dashboard — Aether" },
       {
         property: "og:description",
         content: "Start, stop and watch your home Minecraft server from anywhere.",
@@ -111,7 +111,7 @@ function DashboardPage() {
             <AetherLogo size={40} className="size-9 rounded-xl sm:size-10" />
             <div className="min-w-0">
               <h1 className="truncate text-sm font-semibold tracking-tight sm:text-base">
-                Ether
+                Aether
               </h1>
               <p className="truncate text-[11px] text-muted-foreground sm:text-xs">{user.email}</p>
             </div>
@@ -150,7 +150,7 @@ function DashboardPage() {
         {!agent ? (
           <div className="space-y-4">
             <section className="px-1 py-2 sm:py-3">
-              <p className="text-xs font-medium uppercase text-primary">Welcome to Ether</p>
+              <p className="text-xs font-medium uppercase text-primary">Welcome to Aether</p>
               <h2 className="mt-1 text-xl font-semibold sm:text-2xl">Connect your first server</h2>
               <p className="mt-1 max-w-2xl text-sm leading-6 text-muted-foreground">
                 Create a secure code here, then enter it in the helper app on your server computer.

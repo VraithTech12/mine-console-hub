@@ -7,15 +7,15 @@ export const Route = createFileRoute("/")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Ether — Minecraft Server Control" },
+      { title: "Aether — Minecraft Server Control" },
       {
         name: "description",
-        content: "Sign in to securely manage your home Minecraft server with Ether.",
+        content: "Sign in to securely manage your home Minecraft server with Aether.",
       },
-      { property: "og:title", content: "Ether — Minecraft Server Control" },
+      { property: "og:title", content: "Aether — Minecraft Server Control" },
       {
         property: "og:description",
-        content: "Sign in to securely manage your home Minecraft server with Ether.",
+        content: "Sign in to securely manage your home Minecraft server with Aether.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
