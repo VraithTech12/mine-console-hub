@@ -214,16 +214,19 @@ export type Database = {
           created_at: string
           email: string | null
           id: string
+          minecraft_username: string | null
         }
         Insert: {
           created_at?: string
           email?: string | null
           id: string
+          minecraft_username?: string | null
         }
         Update: {
           created_at?: string
           email?: string | null
           id?: string
+          minecraft_username?: string | null
         }
         Relationships: []
       }
