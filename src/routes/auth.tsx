@@ -44,6 +44,24 @@ function AuthPage() {
   const [sent, setSent] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [mcName, setMcName] = useState("");
+  const [msBusy, setMsBusy] = useState(false);
+
+  async function signInWithMicrosoft() {
+    setMsBusy(true);
+    if (mcName.trim()) window.localStorage.setItem(PENDING_MC_NAME_KEY, mcName.trim());
+    const result = await lovable.auth.signInWithOAuth("microsoft", {
+      redirect_uri: window.location.origin,
+    });
+    if (result.error) {
+      setMsBusy(false);
+      toast.error("Microsoft sign-in didn’t work. Please try again.");
+      return;
+    }
+    if (result.redirected) return;
+    setMsBusy(false);
+  }
+
 
   useEffect(() => {
     if (!loading && session) void navigate({ to: "/dashboard", replace: true });
