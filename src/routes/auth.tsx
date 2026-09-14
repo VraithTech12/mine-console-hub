@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Eye, EyeOff, Loader2, MailCheck, Server, ShieldCheck, Smartphone } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { lovable } from "@/integrations/lovable/index";
 
 import { useSession } from "@/hooks/useSession";
 import { AppBackground } from "@/components/AppBackground";
@@ -11,6 +12,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AetherLogo } from "@/components/AetherLogo";
+import { MinecraftAvatar } from "@/components/MinecraftAvatar";
+import { PENDING_MC_NAME_KEY } from "@/hooks/useProfile";
+
 
 export const Route = createFileRoute("/auth")({
   ssr: false,
