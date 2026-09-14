@@ -109,7 +109,7 @@ function AuthPage() {
           <AetherLogo size={64} className="mb-4" />
           <h1 className="text-3xl font-semibold tracking-tight text-glow sm:text-4xl">Aether</h1>
           <p className="mt-2 max-w-sm text-sm leading-6 text-muted-foreground">
-            Your private control room for the Minecraft server running at home.
+            Your private control room for your Minecraft server.
           </p>
           <div className="mt-4 flex flex-wrap justify-center gap-x-4 gap-y-2 text-xs text-muted-foreground">
             <span className="inline-flex items-center gap-1.5"><ShieldCheck className="size-3.5 text-primary" />Private access</span>
