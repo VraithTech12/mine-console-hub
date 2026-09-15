@@ -39,9 +39,10 @@ export function HelperAddressesCard() {
         <h2 className="text-sm font-semibold">Addresses for the helper app</h2>
       </header>
       <p className="mt-2 text-sm text-muted-foreground">
-        Paste these two addresses into the helper app on your home computer. Don’t use the preview
-        address that starts with <span className="font-mono">id-preview…</span> — it asks for a
-        login, which is why pairing failed before.
+        Paste these two addresses into the helper app on your home computer. Use these exact ones —
+        not the preview address starting with <span className="font-mono">id-preview…</span> (it asks
+        for a login) and not your Vercel address (Vercel can’t hold the live connection the helper
+        needs, so it fails to connect).
       </p>
       <Row label="Website URL" value={WEBSITE_URL} />
       <Row label="Relay URL" value={RELAY_URL} />
