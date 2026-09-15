@@ -274,24 +274,44 @@ function DashboardPage() {
                   list={status.playerList}
                 />
               </div>
-            </TabsContent>
-
-            <TabsContent value="console" className="mt-4">
-              <ConsolePanel agent={agent} />
-            </TabsContent>
-
-            <TabsContent value="setup" className="mt-4 grid gap-4 lg:grid-cols-2">
-              <HelperAddressesCard />
-              <AgentSettingsCard agent={agent} onChanged={refresh} />
-            </TabsContent>
-
-            {role.isOwner && (
-              <TabsContent value="team" className="mt-4">
-                <TeamCard />
-              </TabsContent>
+              </>
             )}
-          </Tabs>
-        )}
+          </TabsContent>
+
+          <TabsContent value="console" className="mt-4">
+            {agent ? (
+              <ConsolePanel agent={agent} />
+            ) : (
+              <section className="panel p-4 sm:p-5">
+                <h2 className="text-base font-semibold">Console</h2>
+                <p className="mt-1 text-sm leading-6 text-muted-foreground">
+                  Once your server computer is linked, everything it prints shows up here and you
+                  can type commands back to it.
+                </p>
+              </section>
+            )}
+          </TabsContent>
+
+          <TabsContent value="setup" className="mt-4 grid gap-4 lg:grid-cols-2">
+            <HelperAddressesCard />
+            <CharacterCard
+              username={profile.minecraftUsername}
+              saving={profile.saving}
+              onSave={profile.save}
+            />
+            {agent ? (
+              <AgentSettingsCard agent={agent} onChanged={refresh} />
+            ) : (
+              <PairAgentCard userId={user.id} onPaired={refresh} />
+            )}
+          </TabsContent>
+
+          {role.isOwner && (
+            <TabsContent value="team" className="mt-4">
+              <TeamCard />
+            </TabsContent>
+          )}
+        </Tabs>
       </main>
     </div>
   );
