@@ -112,10 +112,18 @@ function DashboardPage() {
       <header className="sticky top-0 z-20 border-b border-border/70 bg-background/85 backdrop-blur-md">
         <div className="mx-auto grid w-full max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-2 px-3 py-2.5 sm:gap-3 sm:px-4 sm:py-3">
           <div className="flex min-w-0 items-center gap-2.5">
-            <AetherLogo size={40} className="size-9 rounded-xl sm:size-10" />
+            {profile.minecraftUsername ? (
+              <MinecraftAvatar
+                username={profile.minecraftUsername}
+                size={40}
+                className="size-9 rounded-xl sm:size-10"
+              />
+            ) : (
+              <AetherLogo size={40} className="size-9 rounded-xl sm:size-10" />
+            )}
             <div className="min-w-0">
               <h1 className="truncate text-sm font-semibold tracking-tight sm:text-base">
-                Aether
+                {profile.minecraftUsername ?? "Aether"}
               </h1>
               <p className="truncate text-[11px] text-muted-foreground sm:text-xs">{user.email}</p>
             </div>
