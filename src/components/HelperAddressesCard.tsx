@@ -2,7 +2,7 @@ import { Copy, Link2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 
-const STABLE_HOST = "project--1daf49e9-b583-4a18-89cb-1b5f9c0d8ffc-dev.lovable.app";
+const STABLE_HOST = "project--d90352af-4043-4deb-89c8-8a81e27ff534-dev.lovable.app";
 
 export const WEBSITE_URL = `https://${STABLE_HOST}/api/public`;
 export const RELAY_URL = `wss://${STABLE_HOST}/api/public/agent/relay`;
