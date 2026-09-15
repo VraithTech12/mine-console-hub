@@ -61,6 +61,7 @@ function DashboardPage() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const role = useRole(user?.id);
+  const profile = useProfile(user?.id, user?.email);
 
   useEffect(() => {
     if (!loading && !session) void navigate({ to: "/auth", replace: true });
