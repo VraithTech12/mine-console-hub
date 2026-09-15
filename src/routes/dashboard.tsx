@@ -159,31 +159,34 @@ function DashboardPage() {
       </header>
 
       <main className="mx-auto w-full max-w-6xl px-3 py-4 sm:px-4 sm:py-6">
-        {!agent ? (
-          <div className="space-y-4">
-            <section className="px-1 py-2 sm:py-3">
-              <p className="text-xs font-medium uppercase text-primary">Welcome to Aether</p>
-              <h2 className="mt-1 text-xl font-semibold sm:text-2xl">Connect your first server</h2>
-              <p className="mt-1 max-w-2xl text-sm leading-6 text-muted-foreground">
-                Create a secure code here, then enter it in the helper app on your server computer.
-              </p>
-            </section>
-            <div className="grid min-w-0 gap-4 lg:grid-cols-2">
-              <PairAgentCard userId={user.id} onPaired={refresh} />
-              <HelperAddressesCard />
-            </div>
-            {role.isOwner && <TeamCard />}
-          </div>
-        ) : (
-          <Tabs defaultValue="overview">
-            <TabsList className={`grid h-11 w-full ${role.isOwner ? "grid-cols-4" : "grid-cols-3"}`}>
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="console">Console</TabsTrigger>
-              <TabsTrigger value="setup">Setup</TabsTrigger>
-              {role.isOwner && <TabsTrigger value="team">Team</TabsTrigger>}
-            </TabsList>
+        <Tabs defaultValue="overview">
+          <TabsList className={`grid h-11 w-full ${role.isOwner ? "grid-cols-4" : "grid-cols-3"}`}>
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="console">Console</TabsTrigger>
+            <TabsTrigger value="setup">Setup</TabsTrigger>
+            {role.isOwner && <TabsTrigger value="team">Team</TabsTrigger>}
+          </TabsList>
 
-            <TabsContent value="overview" className="mt-4 space-y-4">
+          <TabsContent value="overview" className="mt-4 space-y-4">
+            {!agent ? (
+              <div className="space-y-4">
+                <section className="px-1 py-2 sm:py-3">
+                  <p className="text-xs font-medium uppercase text-primary">Welcome to Aether</p>
+                  <h2 className="mt-1 text-xl font-semibold sm:text-2xl">
+                    Connect your first server
+                  </h2>
+                  <p className="mt-1 max-w-2xl text-sm leading-6 text-muted-foreground">
+                    Create a secure code here, then enter it in the helper app on your server
+                    computer.
+                  </p>
+                </section>
+                <div className="grid min-w-0 gap-4 lg:grid-cols-2">
+                  <PairAgentCard userId={user.id} onPaired={refresh} />
+                  <HelperAddressesCard />
+                </div>
+              </div>
+            ) : (
+              <>
               <section className="panel overflow-hidden">
                 <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 border-b border-border/70 bg-surface-2/40 p-4 sm:p-5">
                   <div className="min-w-0">
