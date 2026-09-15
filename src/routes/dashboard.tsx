@@ -27,6 +27,9 @@ import { PlayersCard } from "@/components/PlayersCard";
 import { StatMeter } from "@/components/StatMeter";
 import { TeamCard } from "@/components/TeamCard";
 import { AetherLogo } from "@/components/AetherLogo";
+import { MinecraftAvatar } from "@/components/MinecraftAvatar";
+import { CharacterCard } from "@/components/CharacterCard";
+import { useProfile } from "@/hooks/useProfile";
 import { useRole } from "@/hooks/useRole";
 import { formatUptime, formatWhen, isLive, type AgentRow } from "@/lib/agent-client";
 import { EMPTY_STATUS, type ServerStatus } from "@/lib/protocol";
@@ -58,6 +61,7 @@ function DashboardPage() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const role = useRole(user?.id);
+  const profile = useProfile(user?.id, user?.email);
 
   useEffect(() => {
     if (!loading && !session) void navigate({ to: "/auth", replace: true });
@@ -108,10 +112,18 @@ function DashboardPage() {
       <header className="sticky top-0 z-20 border-b border-border/70 bg-background/85 backdrop-blur-md">
         <div className="mx-auto grid w-full max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-2 px-3 py-2.5 sm:gap-3 sm:px-4 sm:py-3">
           <div className="flex min-w-0 items-center gap-2.5">
-            <AetherLogo size={40} className="size-9 rounded-xl sm:size-10" />
+            {profile.minecraftUsername ? (
+              <MinecraftAvatar
+                username={profile.minecraftUsername}
+                size={40}
+                className="size-9 rounded-xl sm:size-10"
+              />
+            ) : (
+              <AetherLogo size={40} className="size-9 rounded-xl sm:size-10" />
+            )}
             <div className="min-w-0">
               <h1 className="truncate text-sm font-semibold tracking-tight sm:text-base">
-                Aether
+                {profile.minecraftUsername ?? "Aether"}
               </h1>
               <p className="truncate text-[11px] text-muted-foreground sm:text-xs">{user.email}</p>
             </div>
@@ -147,31 +159,34 @@ function DashboardPage() {
       </header>
 
       <main className="mx-auto w-full max-w-6xl px-3 py-4 sm:px-4 sm:py-6">
-        {!agent ? (
-          <div className="space-y-4">
-            <section className="px-1 py-2 sm:py-3">
-              <p className="text-xs font-medium uppercase text-primary">Welcome to Aether</p>
-              <h2 className="mt-1 text-xl font-semibold sm:text-2xl">Connect your first server</h2>
-              <p className="mt-1 max-w-2xl text-sm leading-6 text-muted-foreground">
-                Create a secure code here, then enter it in the helper app on your server computer.
-              </p>
-            </section>
-            <div className="grid min-w-0 gap-4 lg:grid-cols-2">
-              <PairAgentCard userId={user.id} onPaired={refresh} />
-              <HelperAddressesCard />
-            </div>
-            {role.isOwner && <TeamCard />}
-          </div>
-        ) : (
-          <Tabs defaultValue="overview">
-            <TabsList className={`grid h-11 w-full ${role.isOwner ? "grid-cols-4" : "grid-cols-3"}`}>
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="console">Console</TabsTrigger>
-              <TabsTrigger value="setup">Setup</TabsTrigger>
-              {role.isOwner && <TabsTrigger value="team">Team</TabsTrigger>}
-            </TabsList>
+        <Tabs defaultValue="overview">
+          <TabsList className={`grid h-11 w-full ${role.isOwner ? "grid-cols-4" : "grid-cols-3"}`}>
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="console">Console</TabsTrigger>
+            <TabsTrigger value="setup">Setup</TabsTrigger>
+            {role.isOwner && <TabsTrigger value="team">Team</TabsTrigger>}
+          </TabsList>
 
-            <TabsContent value="overview" className="mt-4 space-y-4">
+          <TabsContent value="overview" className="mt-4 space-y-4">
+            {!agent ? (
+              <div className="space-y-4">
+                <section className="px-1 py-2 sm:py-3">
+                  <p className="text-xs font-medium uppercase text-primary">Welcome to Aether</p>
+                  <h2 className="mt-1 text-xl font-semibold sm:text-2xl">
+                    Connect your first server
+                  </h2>
+                  <p className="mt-1 max-w-2xl text-sm leading-6 text-muted-foreground">
+                    Create a secure code here, then enter it in the helper app on your server
+                    computer.
+                  </p>
+                </section>
+                <div className="grid min-w-0 gap-4 lg:grid-cols-2">
+                  <PairAgentCard userId={user.id} onPaired={refresh} />
+                  <HelperAddressesCard />
+                </div>
+              </div>
+            ) : (
+              <>
               <section className="panel overflow-hidden">
                 <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 border-b border-border/70 bg-surface-2/40 p-4 sm:p-5">
                   <div className="min-w-0">
@@ -259,24 +274,44 @@ function DashboardPage() {
                   list={status.playerList}
                 />
               </div>
-            </TabsContent>
-
-            <TabsContent value="console" className="mt-4">
-              <ConsolePanel agent={agent} />
-            </TabsContent>
-
-            <TabsContent value="setup" className="mt-4 grid gap-4 lg:grid-cols-2">
-              <HelperAddressesCard />
-              <AgentSettingsCard agent={agent} onChanged={refresh} />
-            </TabsContent>
-
-            {role.isOwner && (
-              <TabsContent value="team" className="mt-4">
-                <TeamCard />
-              </TabsContent>
+              </>
             )}
-          </Tabs>
-        )}
+          </TabsContent>
+
+          <TabsContent value="console" className="mt-4">
+            {agent ? (
+              <ConsolePanel agent={agent} />
+            ) : (
+              <section className="panel p-4 sm:p-5">
+                <h2 className="text-base font-semibold">Console</h2>
+                <p className="mt-1 text-sm leading-6 text-muted-foreground">
+                  Once your server computer is linked, everything it prints shows up here and you
+                  can type commands back to it.
+                </p>
+              </section>
+            )}
+          </TabsContent>
+
+          <TabsContent value="setup" className="mt-4 grid gap-4 lg:grid-cols-2">
+            <HelperAddressesCard />
+            <CharacterCard
+              username={profile.minecraftUsername}
+              saving={profile.saving}
+              onSave={profile.save}
+            />
+            {agent ? (
+              <AgentSettingsCard agent={agent} onChanged={refresh} />
+            ) : (
+              <PairAgentCard userId={user.id} onPaired={refresh} />
+            )}
+          </TabsContent>
+
+          {role.isOwner && (
+            <TabsContent value="team" className="mt-4">
+              <TeamCard />
+            </TabsContent>
+          )}
+        </Tabs>
       </main>
     </div>
   );

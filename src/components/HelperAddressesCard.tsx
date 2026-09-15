@@ -2,7 +2,7 @@ import { Copy, Link2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 
-const STABLE_HOST = "project--1daf49e9-b583-4a18-89cb-1b5f9c0d8ffc-dev.lovable.app";
+const STABLE_HOST = "project--d90352af-4043-4deb-89c8-8a81e27ff534-dev.lovable.app";
 
 export const WEBSITE_URL = `https://${STABLE_HOST}/api/public`;
 export const RELAY_URL = `wss://${STABLE_HOST}/api/public/agent/relay`;
@@ -39,9 +39,10 @@ export function HelperAddressesCard() {
         <h2 className="text-sm font-semibold">Addresses for the helper app</h2>
       </header>
       <p className="mt-2 text-sm text-muted-foreground">
-        Paste these two addresses into the helper app on your home computer. Don’t use the preview
-        address that starts with <span className="font-mono">id-preview…</span> — it asks for a
-        login, which is why pairing failed before.
+        Paste these two addresses into the helper app on your home computer. Use these exact ones —
+        not the preview address starting with <span className="font-mono">id-preview…</span> (it asks
+        for a login) and not your Vercel address (Vercel can’t hold the live connection the helper
+        needs, so it fails to connect).
       </p>
       <Row label="Website URL" value={WEBSITE_URL} />
       <Row label="Relay URL" value={RELAY_URL} />
