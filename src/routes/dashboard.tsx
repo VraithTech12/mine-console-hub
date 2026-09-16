@@ -10,6 +10,7 @@ import {
   RefreshCw,
   Timer,
   Users,
+  WifiOff,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useSession } from "@/hooks/useSession";
@@ -29,6 +30,7 @@ import { TeamCard } from "@/components/TeamCard";
 import { AetherLogo } from "@/components/AetherLogo";
 import { MinecraftAvatar } from "@/components/MinecraftAvatar";
 import { CharacterCard } from "@/components/CharacterCard";
+import { AccountCard } from "@/components/AccountCard";
 import { useProfile } from "@/hooks/useProfile";
 import { useRole } from "@/hooks/useRole";
 import { formatUptime, formatWhen, isLive, type AgentRow } from "@/lib/agent-client";
@@ -197,15 +199,32 @@ function DashboardPage() {
                   </div>
                   <span
                     className={`shrink-0 rounded-full border px-2.5 py-1 text-[11px] font-medium capitalize sm:text-xs ${
-                      running
-                        ? "border-success/40 bg-success/15 text-success"
-                        : "border-border bg-surface-2 text-muted-foreground"
+                      !live
+                        ? "border-warning/40 bg-warning/15 text-warning"
+                        : running
+                          ? "border-success/40 bg-success/15 text-success"
+                          : "border-border bg-surface-2 text-muted-foreground"
                     }`}
                   >
-                    {status.state}
+                    {live ? status.state : "unreachable"}
                   </span>
                 </div>
 
+                {!live ? (
+                  <div className="flex items-start gap-3 p-4 sm:p-5">
+                    <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-warning/15 text-warning">
+                      <WifiOff className="size-4" />
+                    </span>
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium">Can’t reach the server</p>
+                      <p className="mt-1 text-sm leading-6 text-muted-foreground">
+                        The helper app on your server computer isn’t answering, so we can’t show
+                        players, uptime or usage right now. Open the helper and this updates on its
+                        own.
+                      </p>
+                    </div>
+                  </div>
+                ) : (
                 <div className="grid grid-cols-2 gap-2.5 p-4 sm:gap-3 sm:p-5 lg:grid-cols-4">
                   <StatMeter
                     icon={Users}
@@ -246,6 +265,7 @@ function DashboardPage() {
                     tone="chat"
                   />
                 </div>
+                )}
 
                 <div className="border-t border-border/70 p-4 sm:p-5">
                   {status.lastError && (
@@ -264,16 +284,18 @@ function DashboardPage() {
                 </div>
               </section>
 
-              <div className="grid gap-4 lg:grid-cols-3">
-                <div className="lg:col-span-2">
-                  <QuickCommands agent={agent} />
+              {live && (
+                <div className="grid gap-4 lg:grid-cols-3">
+                  <div className="lg:col-span-2">
+                    <QuickCommands agent={agent} />
+                  </div>
+                  <PlayersCard
+                    players={status.players}
+                    max={status.maxPlayers}
+                    list={status.playerList}
+                  />
                 </div>
-                <PlayersCard
-                  players={status.players}
-                  max={status.maxPlayers}
-                  list={status.playerList}
-                />
-              </div>
+              )}
               </>
             )}
           </TabsContent>
@@ -293,6 +315,12 @@ function DashboardPage() {
           </TabsContent>
 
           <TabsContent value="setup" className="mt-4 grid gap-4 lg:grid-cols-2">
+            <AccountCard
+              email={user.email}
+              minecraftUsername={profile.minecraftUsername}
+              saving={profile.saving}
+              onSaveName={profile.save}
+            />
             <HelperAddressesCard />
             <CharacterCard
               username={profile.minecraftUsername}
