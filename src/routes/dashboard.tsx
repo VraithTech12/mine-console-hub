@@ -10,6 +10,7 @@ import {
   RefreshCw,
   Timer,
   Users,
+  WifiOff,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useSession } from "@/hooks/useSession";
@@ -283,16 +284,18 @@ function DashboardPage() {
                 </div>
               </section>
 
-              <div className="grid gap-4 lg:grid-cols-3">
-                <div className="lg:col-span-2">
-                  <QuickCommands agent={agent} />
+              {live && (
+                <div className="grid gap-4 lg:grid-cols-3">
+                  <div className="lg:col-span-2">
+                    <QuickCommands agent={agent} />
+                  </div>
+                  <PlayersCard
+                    players={status.players}
+                    max={status.maxPlayers}
+                    list={status.playerList}
+                  />
                 </div>
-                <PlayersCard
-                  players={status.players}
-                  max={status.maxPlayers}
-                  list={status.playerList}
-                />
-              </div>
+              )}
               </>
             )}
           </TabsContent>
@@ -312,6 +315,12 @@ function DashboardPage() {
           </TabsContent>
 
           <TabsContent value="setup" className="mt-4 grid gap-4 lg:grid-cols-2">
+            <AccountCard
+              email={user.email}
+              minecraftUsername={profile.minecraftUsername}
+              saving={profile.saving}
+              onSaveName={profile.save}
+            />
             <HelperAddressesCard />
             <CharacterCard
               username={profile.minecraftUsername}
