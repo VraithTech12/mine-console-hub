@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AtSign, Check, KeyRound, Link2, Loader2, ShieldCheck, Unlink, Wand2 } from "lucide-react";
 import { toast } from "sonner";
@@ -129,6 +129,16 @@ export function AccountCard({ email, minecraftUsername, saving, onSaveName }: Pr
 
   const passwordsMatch = newPassword.length >= 8 && newPassword === confirmPassword;
   const canUseMsName = Boolean(msName) && msName !== minecraftUsername;
+
+  // First time a Microsoft account is linked, use its name for the avatar head.
+  const adopted = useRef(false);
+  useEffect(() => {
+    if (adopted.current || saving || minecraftUsername || !msName) return;
+    adopted.current = true;
+    void onSaveName(msName).catch(() => {
+      adopted.current = false;
+    });
+  }, [msName, minecraftUsername, saving, onSaveName]);
 
   return (
     <section className="panel min-w-0 overflow-hidden lg:col-span-2">

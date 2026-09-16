@@ -29,6 +29,7 @@ import { TeamCard } from "@/components/TeamCard";
 import { AetherLogo } from "@/components/AetherLogo";
 import { MinecraftAvatar } from "@/components/MinecraftAvatar";
 import { CharacterCard } from "@/components/CharacterCard";
+import { AccountCard } from "@/components/AccountCard";
 import { useProfile } from "@/hooks/useProfile";
 import { useRole } from "@/hooks/useRole";
 import { formatUptime, formatWhen, isLive, type AgentRow } from "@/lib/agent-client";
