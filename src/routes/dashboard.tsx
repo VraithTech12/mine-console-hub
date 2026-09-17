@@ -71,6 +71,15 @@ function DashboardPage() {
   const queryClient = useQueryClient();
   const role = useRole(user?.id);
   const profile = useProfile(user?.id, user?.email);
+  const [tab, setTab] = useState("overview");
+
+  const navItems: NavItem[] = [
+    { value: "overview", label: "Overview", icon: LayoutDashboard },
+    { value: "console", label: "Console", icon: Terminal },
+    { value: "setup", label: "Settings", icon: Settings },
+    ...(role.isOwner ? [{ value: "team", label: "Team", icon: UsersRound }] : []),
+  ];
+
 
   useEffect(() => {
     if (!loading && !session) void navigate({ to: "/auth", replace: true });
