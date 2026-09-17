@@ -167,14 +167,11 @@ function DashboardPage() {
         </div>
       </header>
 
-      <main className="mx-auto w-full max-w-6xl px-3 py-4 sm:px-4 sm:py-6">
-        <Tabs defaultValue="overview">
-          <TabsList className={`grid h-11 w-full ${role.isOwner ? "grid-cols-4" : "grid-cols-3"}`}>
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="console">Console</TabsTrigger>
-            <TabsTrigger value="setup">Setup</TabsTrigger>
-            {role.isOwner && <TabsTrigger value="team">Team</TabsTrigger>}
-          </TabsList>
+      <main className="mx-auto w-full max-w-6xl px-3 pb-24 pt-4 sm:px-4 sm:pb-10 sm:pt-6">
+        <Tabs value={tab} onValueChange={setTab}>
+          <DashboardNav items={navItems} value={tab} onChange={setTab} />
+
+
 
           <TabsContent value="overview" className="mt-4 space-y-4">
             {!agent ? (
