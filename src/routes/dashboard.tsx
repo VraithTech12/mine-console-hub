@@ -1,21 +1,25 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   Cpu,
   Gauge,
+  LayoutDashboard,
   Loader2,
   LogOut,
   MemoryStick,
   RefreshCw,
+  Settings,
+  Terminal,
   Timer,
   Users,
+  UsersRound,
   WifiOff,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useSession } from "@/hooks/useSession";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { StatusDot, type DotState } from "@/components/StatusDot";
 import { AppBackground } from "@/components/AppBackground";
 import { PairAgentCard } from "@/components/PairAgentCard";
@@ -31,10 +35,13 @@ import { AetherLogo } from "@/components/AetherLogo";
 import { MinecraftAvatar } from "@/components/MinecraftAvatar";
 import { CharacterCard } from "@/components/CharacterCard";
 import { AccountCard } from "@/components/AccountCard";
+import { TwoFactorCard } from "@/components/TwoFactorCard";
+import { DashboardNav, type NavItem } from "@/components/DashboardNav";
 import { useProfile } from "@/hooks/useProfile";
 import { useRole } from "@/hooks/useRole";
 import { formatUptime, formatWhen, isLive, type AgentRow } from "@/lib/agent-client";
 import { EMPTY_STATUS, type ServerStatus } from "@/lib/protocol";
+
 
 export const Route = createFileRoute("/dashboard")({
   ssr: false,
