@@ -334,7 +334,9 @@ function DashboardPage() {
               saving={profile.saving}
               onSaveName={profile.save}
             />
+            <TwoFactorCard />
             <HelperAddressesCard />
+
             <CharacterCard
               username={profile.minecraftUsername}
               saving={profile.saving}
